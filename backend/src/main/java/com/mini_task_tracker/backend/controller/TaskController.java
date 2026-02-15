@@ -37,20 +37,21 @@ public class TaskController {
     public ResponseEntity<Page<TaskResponse>> getAllTasks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir) {
-        Page<TaskResponse> tasks = taskService.getAllTasks(page, size, sortBy, sortDir);
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir,
+            @RequestParam(required = false) String search) {
+        Page<TaskResponse> tasks = taskService.getAllTasks(page, size, sortBy, sortDir, search);
         return ResponseEntity.ok(tasks);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @Valid @RequestBody TaskUpdateRequest taskUpdateRequest){
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @Valid @RequestBody TaskUpdateRequest taskUpdateRequest) {
         TaskResponse taskResponse = taskService.updateTask(id, taskUpdateRequest);
         return ResponseEntity.ok(taskResponse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DefaultStringResponse> deleteTask(@PathVariable Long id){
+    public ResponseEntity<DefaultStringResponse> deleteTask(@PathVariable Long id) {
         DefaultStringResponse response = taskService.deleteTask(id);
         return ResponseEntity.ok(response);
     }

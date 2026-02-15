@@ -42,15 +42,24 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Page<TaskResponse> getAllTasks(int page, int size, String sortBy, String sortDir) {
+    public Page<TaskResponse> getAllTasks(int page, int size, String sortBy, String sortDir, String search) {
+        String actualSortField = sortBy.equalsIgnoreCase("priority") ? "priorityOrder" : sortBy;
+
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
-                ? Sort.by(sortBy).ascending()
-                : Sort.by(sortBy).descending();
+                ? Sort.by(actualSortField).ascending()
+                : Sort.by(actualSortField).descending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return taskRepository.findAll(pageable)
-                .map(task -> modelMapper.map(task, TaskResponse.class));
+        Page<Task> taskPage;
+
+        if(search != null && !search.trim().isEmpty()){
+            taskPage = taskRepository.findByTitleContainingIgnoreCase(search, pageable);
+        }else{
+            taskPage = taskRepository.findAll(pageable);
+        }
+
+        return taskPage.map(task -> modelMapper.map(task, TaskResponse.class));
     }
 
     @Override

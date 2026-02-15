@@ -11,7 +11,7 @@ public interface TaskService {
 
     TaskResponse getTaskById(Long id);
 
-    Page<TaskResponse> getAllTasks(int page, int size, String sortBy, String sortDir);
+    Page<TaskResponse> getAllTasks(int page, int size, String sortBy, String sortDir, String serach);
 
     TaskResponse updateTask(Long id, TaskUpdateRequest taskUpdateRequest);
 
