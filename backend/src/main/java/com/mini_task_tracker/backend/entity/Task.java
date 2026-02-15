@@ -2,6 +2,7 @@ package com.mini_task_tracker.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,6 +25,9 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     private Priority priority = Priority.MEDIUM;
+
+    @Formula("(CASE priority WHEN 'HIGH' THEN 1 WHEN 'MEDIUM' THEN 2 WHEN 'LOW' THEN 3 ELSE 4 END)")
+    private int priorityOrder;
 
     @Column(name = "due_date")
     private LocalDate dueDate;
