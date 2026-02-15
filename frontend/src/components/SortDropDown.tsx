@@ -1,25 +1,35 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-const SortDropDown = () => {
-  return (
-    <Select defaultValue="newest">
-      <SelectTrigger className="w-[180px] bg-white/90 border-none shadow-sm rounded-2xl !h-10 hover:cursor-pointer hover:opacity-70">
-        <SelectValue placeholder="Sort by" />
-      </SelectTrigger>
-      <SelectContent position="popper" sideOffset={4}>
-        <SelectItem value="newest">Newest First</SelectItem>
-        <SelectItem value="oldest">Oldest First</SelectItem>
-        <SelectItem value="priority-high">Priority: High to Low</SelectItem>
-        <SelectItem value="priority-low">Priority: Low to High</SelectItem>
-      </SelectContent>
-    </Select>
-  )
+interface SortDropDownProps {
+  sortBy: string;
+  sortDir: string;
+  onSortChange: (field: string, dir: string) => void;
 }
 
-export default SortDropDown
+const SortDropDown = ({ sortBy, sortDir, onSortChange }: SortDropDownProps) => {
+  return (
+    <Select
+      value={`${sortBy}-${sortDir}`}
+      onValueChange={(value) => {
+        const [field, dir] = value.split("-");
+        onSortChange(field, dir);
+      }}
+    >
+      <SelectTrigger className="w-[180px] bg-white/90 border-none shadow-sm rounded-2xl !h-10 hover:cursor-pointer hover:opacity-70">
+        <div className="w-full truncate text-left">
+          <SelectValue placeholder="Sort by" />
+        </div>
+      </SelectTrigger>
+      <SelectContent position="popper" sideOffset={4}>
+        <SelectItem value="createdAt-desc">Newest First</SelectItem>
+        <SelectItem value="createdAt-asc">Oldest First</SelectItem>
+        <SelectItem value="priority-asc">Priority: High to Low</SelectItem>
+        <SelectItem value="priority-desc">Priority: Low to High</SelectItem>
+        <SelectItem value="dueDate-asc">Deadline: Soonest First</SelectItem>
+        <SelectItem value="dueDate-desc">Deadline: Furthest First</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+};
+
+export default SortDropDown;

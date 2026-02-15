@@ -20,3 +20,13 @@ export const Priority = {
   MEDIUM: "MEDIUM",
   LOW: "LOW"
 };
+
+export interface TaskFormValues {
+  title: string;
+  description: string;
+  status: string;
+  priority: string;
+  dueDate: string;
+}
+
+export type Mode =  "add" | "view" | "edit";
